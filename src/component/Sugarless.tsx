@@ -3,10 +3,10 @@ import { Send, Book, Github, Code, Play, Copy, Check } from 'lucide-react';
 
 const SugarlessFrontend = () => {
   const [activeTab, setActiveTab] = useState('home');
-  const [requestUrl, setRequestUrl] = useState('https://api.example.com/users');
+  const [requestUrl, setRequestUrl] = useState('http://127.0.0.1:8000/');
   const [requestMethod, setRequestMethod] = useState('GET');
-  const [requestHeaders, setRequestHeaders] = useState('{\n  "Content-Type": "application/json",\n  "Authorization": "Bearer your-token"\n}');
-  const [requestBody, setRequestBody] = useState('{\n  "name": "John Doe",\n  "email": "john@example.com"\n}');
+  const [requestHeaders, setRequestHeaders] = useState('{\n  "accept": "application/json",\n  "Content-Type": "application/json"\n}');
+  const [requestBody, setRequestBody] = useState('{\n  "name": "Green Tea",\n  "sugar": {\n    "added": 0,\n    "natural": 0\n  },\n  "type": [\n    "sugarless"\n  ],\n  "calories": 2,\n  "category": "drink",\n  "macros": {\n    "fat": 0,\n    "protein": 0,\n    "carbs": 0\n  }\n}');
   const [response, setResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -14,22 +14,81 @@ const SugarlessFrontend = () => {
   const handleSendRequest = async () => {
     setIsLoading(true);
     
-    // Simulate API call
+    // Simulate API call based on endpoint
     setTimeout(() => {
-      const simulatedResponse = {
-        status: 200,
-        data: {
-          id: 12345,
-          name: "John Doe",
-          email: "john@example.com",
-          created_at: new Date().toISOString(),
-          message: "Request processed successfully"
-        },
-        headers: {
-          "content-type": "application/json",
-          "x-request-id": "req_" + Math.random().toString(36).substr(2, 9)
-        }
-      };
+      let simulatedResponse;
+      
+      if (requestUrl.includes('/random')) {
+        simulatedResponse = {
+          "name": "Sparkling Water",
+          "sugar": {
+            "added": 0,
+            "natural": 0
+          },
+          "type": [
+            "sugarless"
+          ],
+          "calories": 0,
+          "category": "drink",
+          "macros": {
+            "fat": 0,
+            "protein": 0,
+            "carbs": 0
+          }
+        };
+      } else if (requestMethod === 'GET' && !requestUrl.includes('/delete/')) {
+        simulatedResponse = [
+          {
+            "id": "685e3a45b687e34b6e2f46c8",
+            "name": "Water",
+            "sugar": {
+              "added": 0,
+              "natural": 0
+            },
+            "type": [
+              "sugarless"
+            ],
+            "calories": 0,
+            "category": "drink",
+            "macros": {
+              "fat": 0,
+              "protein": 0,
+              "carbs": 0
+            }
+          },
+          {
+            "id": "685e3b1091dbcc6fa6f6aa4b",
+            "name": "Black Coffee",
+            "sugar": {
+              "added": 0,
+              "natural": 0
+            },
+            "type": [
+              "sugarless"
+            ],
+            "calories": 2,
+            "category": "drink",
+            "macros": {
+              "fat": 0,
+              "protein": 0.3,
+              "carbs": 0
+            }
+          }
+        ];
+      } else if (requestMethod === 'POST') {
+        simulatedResponse = {
+          "id": "685e3c" + Math.random().toString(16).substr(2, 18),
+          ...JSON.parse(requestBody)
+        };
+      } else if (requestMethod === 'DELETE') {
+        simulatedResponse = {
+          "message": "Product deleted successfully"
+        };
+      } else {
+        simulatedResponse = {
+          "message": "Request processed successfully"
+        };
+      }
       
       setResponse(JSON.stringify(simulatedResponse, null, 2));
       setIsLoading(false);
@@ -91,8 +150,8 @@ const SugarlessFrontend = () => {
           Welcome to Sugarless API
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          A clean, powerful REST API without the unnecessary complexity. 
-          Try it out right here with our interactive playground.
+          Track and discover sugarless products with our clean REST API. 
+          Find products by sugar content, calories, and nutritional information.
         </p>
       </div>
 
@@ -111,7 +170,15 @@ const SugarlessFrontend = () => {
               </label>
               <select
                 value={requestMethod}
-                onChange={(e) => setRequestMethod(e.target.value)}
+                onChange={(e) => {
+                  setRequestMethod(e.target.value);
+                  // Update URL based on method
+                  if (e.target.value === 'DELETE') {
+                    setRequestUrl('http://127.0.0.1:8000/delete/{id}');
+                  } else if (e.target.value === 'GET' && requestUrl.includes('/delete/')) {
+                    setRequestUrl('http://127.0.0.1:8000/');
+                  }
+                }}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="GET">GET</option>
@@ -131,8 +198,16 @@ const SugarlessFrontend = () => {
                 value={requestUrl}
                 onChange={(e) => setRequestUrl(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="https://api.example.com/endpoint"
+                placeholder="http://127.0.0.1:8000/"
               />
+              <div className="mt-2 text-sm text-gray-500">
+                <p><strong>Available endpoints:</strong></p>
+                <ul className="list-disc list-inside space-y-1 mt-1">
+                  <li><code>http://127.0.0.1:8000/</code> - Get all products</li>
+                  <li><code>http://127.0.0.1:8000/random</code> - Get random product</li>
+                  <li><code>http://127.0.0.1:8000/delete/{`{id}`}</code> - Delete product by ID</li>
+                </ul>
+              </div>
             </div>
 
             <div>
@@ -223,102 +298,161 @@ const SugarlessFrontend = () => {
         <div className="prose max-w-none">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Getting Started</h2>
           <p className="text-gray-600 mb-6">
-            Welcome to the Sugarless API documentation. This API provides a clean, RESTful interface 
-            for managing your data without unnecessary complexity.
+            The Sugarless API helps you track and discover products with no added sugar. 
+            Search through our database of sugarless foods and beverages, or add your own products.
           </p>
 
           <h3 className="text-xl font-semibold text-gray-800 mb-3">Base URL</h3>
           <div className="bg-gray-100 rounded-md p-3 mb-6">
-            <code className="text-sm font-mono">https://api.sugarless.com/v1</code>
+            <code className="text-sm font-mono">http://127.0.0.1:8000</code>
           </div>
 
-          <h3 className="text-xl font-semibold text-gray-800 mb-3">Authentication</h3>
+          <h3 className="text-xl font-semibold text-gray-800 mb-3">Data Format</h3>
           <p className="text-gray-600 mb-4">
-            All API requests require authentication using a Bearer token in the Authorization header:
+            All requests and responses use JSON format. Each product contains:
           </p>
           <div className="bg-gray-100 rounded-md p-3 mb-6">
-            <code className="text-sm font-mono">Authorization: Bearer your-api-token</code>
+            <code className="text-sm font-mono whitespace-pre">
+{`{
+  "id": "string",
+  "name": "string",
+  "sugar": {
+    "added": 0,
+    "natural": 0
+  },
+  "type": ["sugarless"],
+  "calories": 0,
+  "category": "drink|food|oil|daily",
+  "macros": {
+    "fat": 0,
+    "protein": 0,
+    "carbs": 0
+  }
+}`}
+            </code>
           </div>
 
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Endpoints</h2>
           
           <div className="space-y-6">
             <div className="border-l-4 border-blue-500 pl-4">
-              <h4 className="text-lg font-semibold text-gray-800">GET /users</h4>
-              <p className="text-gray-600 mb-2">Retrieve a list of users</p>
+              <h4 className="text-lg font-semibold text-gray-800">GET /</h4>
+              <p className="text-gray-600 mb-2">Get all products in the database</p>
               <div className="bg-gray-100 rounded-md p-3 text-sm">
                 <strong>Response:</strong> 200 OK<br/>
-                <code className="font-mono">
-                  {`{
-  "users": [
-    {
-      "id": 1,
-      "name": "John Doe",
-      "email": "john@example.com",
-      "created_at": "2024-01-01T00:00:00Z"
+                <code className="font-mono whitespace-pre">
+{`[
+  {
+    "id": "685e3a45b687e34b6e2f46c8",
+    "name": "Water",
+    "sugar": {
+      "added": 0,
+      "natural": 0
+    },
+    "type": ["sugarless"],
+    "calories": 0,
+    "category": "drink",
+    "macros": {
+      "fat": 0,
+      "protein": 0,
+      "carbs": 0
     }
-  ],
-  "total": 1,
-  "page": 1
+  }
+]`}
+                </code>
+              </div>
+            </div>
+
+            <div className="border-l-4 border-purple-500 pl-4">
+              <h4 className="text-lg font-semibold text-gray-800">GET /random</h4>
+              <p className="text-gray-600 mb-2">Get a random product from the database</p>
+              <div className="bg-gray-100 rounded-md p-3 text-sm">
+                <strong>Response:</strong> 200 OK<br/>
+                <code className="font-mono whitespace-pre">
+{`{
+  "name": "Avocado Oil",
+  "sugar": {
+    "added": 0,
+    "natural": 0
+  },
+  "type": ["sugarless"],
+  "calories": 884,
+  "category": "oil",
+  "macros": {
+    "fat": 100,
+    "protein": 0,
+    "carbs": 0
+  }
 }`}
                 </code>
               </div>
             </div>
 
             <div className="border-l-4 border-green-500 pl-4">
-              <h4 className="text-lg font-semibold text-gray-800">POST /users</h4>
-              <p className="text-gray-600 mb-2">Create a new user</p>
+              <h4 className="text-lg font-semibold text-gray-800">POST /</h4>
+              <p className="text-gray-600 mb-2">Add a new product to the database</p>
               <div className="bg-gray-100 rounded-md p-3 text-sm mb-2">
                 <strong>Request Body:</strong><br/>
-                <code className="font-mono">
-                  {`{
-  "name": "Jane Doe",
-  "email": "jane@example.com"
+                <code className="font-mono whitespace-pre">
+{`{
+  "name": "Green Tea",
+  "sugar": {
+    "added": 0,
+    "natural": 0
+  },
+  "type": ["sugarless"],
+  "calories": 2,
+  "category": "drink",
+  "macros": {
+    "fat": 0,
+    "protein": 0.1,
+    "carbs": 0
+  }
 }`}
                 </code>
               </div>
               <div className="bg-gray-100 rounded-md p-3 text-sm">
-                <strong>Response:</strong> 201 Created<br/>
-                <code className="font-mono">
-                  {`{
-  "id": 2,
-  "name": "Jane Doe",
-  "email": "jane@example.com",
-  "created_at": "2024-01-01T00:00:00Z"
-}`}
-                </code>
-              </div>
-            </div>
-
-            <div className="border-l-4 border-yellow-500 pl-4">
-              <h4 className="text-lg font-semibold text-gray-800">PUT /users/:id</h4>
-              <p className="text-gray-600 mb-2">Update an existing user</p>
-              <div className="bg-gray-100 rounded-md p-3 text-sm">
-                <strong>Response:</strong> 200 OK
+                <strong>Response:</strong> 200 OK<br/>
+                <small className="text-gray-600">Returns the created product with generated ID</small>
               </div>
             </div>
 
             <div className="border-l-4 border-red-500 pl-4">
-              <h4 className="text-lg font-semibold text-gray-800">DELETE /users/:id</h4>
-              <p className="text-gray-600 mb-2">Delete a user</p>
+              <h4 className="text-lg font-semibold text-gray-800">DELETE /delete/{`{id}`}</h4>
+              <p className="text-gray-600 mb-2">Delete a product by its ID</p>
               <div className="bg-gray-100 rounded-md p-3 text-sm">
-                <strong>Response:</strong> 204 No Content
+                <strong>Parameters:</strong><br/>
+                <code className="font-mono">id (string, path): Product ID</code><br/><br/>
+                <strong>Response:</strong> 200 OK
               </div>
             </div>
           </div>
 
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4 mt-8">Product Categories</h2>
+          <ul className="list-disc list-inside text-gray-600 space-y-1">
+            <li><strong>drink</strong> - Beverages like water, tea, coffee</li>
+            <li><strong>food</strong> - Solid food items</li>
+            <li><strong>oil</strong> - Cooking oils and fats</li>
+            <li><strong>daily</strong> - Daily use products</li>
+          </ul>
+
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 mt-8">Error Handling</h2>
           <p className="text-gray-600 mb-4">
-            The API uses conventional HTTP response codes to indicate success or failure:
+            The API uses conventional HTTP response codes:
           </p>
           <ul className="list-disc list-inside text-gray-600 space-y-1">
             <li><strong>200</strong> - Success</li>
-            <li><strong>201</strong> - Created</li>
-            <li><strong>400</strong> - Bad Request</li>
-            <li><strong>401</strong> - Unauthorized</li>
+            <li><strong>422</strong> - Validation Error (invalid request data)</li>
             <li><strong>404</strong> - Not Found</li>
             <li><strong>500</strong> - Internal Server Error</li>
           </ul>
+
+          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-6">
+            <p className="text-sm text-yellow-800">
+              <strong>Note:</strong> This API is currently running locally on port 8000. 
+              Make sure your backend server is running before testing the endpoints.
+            </p>
+          </div>
         </div>
       </div>
     </div>
