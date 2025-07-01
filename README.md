@@ -1,4 +1,4 @@
-# react-openapi-sugarfree
+# SugarFree OpenAPI
 
 **react-openapi-sugarfree** is a modern, TypeScript-powered React frontend for the [OpenAPI Sugar Free](https://github.com/Froas/sugarless-fastapi) backend service. Easily explore, search, and discover sugarless products via a clean and intuitive web interface.
 
