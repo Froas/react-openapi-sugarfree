@@ -26,7 +26,7 @@
 ## 🧩 Tech Stack
 
 * **Frontend:** React, TypeScript
-* **UI:** \[TailWind CSS]
+* **UI:** \[TailWind CSS, lucide]
 * **API:** OpenAPI Sugar Free (RESTful API)
 
 ---
