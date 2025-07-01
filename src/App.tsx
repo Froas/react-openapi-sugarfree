@@ -1,4 +1,3 @@
-import './App.css'
 import SugarlessFrontend from './component/Sugarless'
 
 function App() {
