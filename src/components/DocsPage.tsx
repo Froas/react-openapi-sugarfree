@@ -3,11 +3,29 @@ import { apiConfig, apiEndpoints } from '../config/api';
 import type { ProductCategory } from '../types';
 
 const DocsPage: React.FC = () => {
-  const productCategories: Array<{ category: ProductCategory; description: string }> = [
+  const productCategories: Array<{ category: string; description: string }> = [
+    { category: 'daily', description: 'Daily use products and essentials' },
+    { category: 'snack', description: 'Snack foods and light bites' },
     { category: 'drink', description: 'Beverages like water, tea, coffee' },
-    { category: 'food', description: 'Solid food items' },
-    { category: 'oil', description: 'Cooking oils and fats' },
-    { category: 'daily', description: 'Daily use products' },
+    { category: 'food', description: 'General food items' },
+    { category: 'poultry', description: 'Chicken, turkey, and other poultry' },
+    { category: 'fish', description: 'Fresh and processed fish products' },
+    { category: 'meat', description: 'Beef, pork, lamb, and other meats' },
+    { category: 'vegetable', description: 'Fresh and processed vegetables' },
+    { category: 'nut', description: 'Nuts, seeds, and nut-based products' },
+    { category: 'oil', description: 'Cooking oils and liquid fats' },
+    { category: 'vegetarian', description: 'Vegetarian-friendly products' },
+    { category: 'seafood', description: 'Shellfish and other seafood' },
+    { category: 'condiment', description: 'Sauces, spices, and seasonings' },
+    { category: 'fat', description: 'Solid fats and fat-based products' },
+  ];
+
+  const productTags: Array<{ tag: string; description: string }> = [
+    { tag: 'sugarless', description: 'Contains no added sugar' },
+    { tag: 'keto', description: 'Ketogenic diet friendly' },
+    { tag: 'gluten-free', description: 'Contains no gluten' },
+    { tag: 'vegan', description: 'Contains no animal products' },
+    { tag: 'organic', description: 'Organically produced' },
   ];
 
   const httpStatusCodes = [
@@ -164,9 +182,9 @@ const DocsPage: React.FC = () => {
     "added": "number (grams)",
     "natural": "number (grams)"
   },
-  "type": ["sugarless"],
+  "tags": ["sugarless", "keto", "gluten-free", "vegan", "organic"],
   "calories": "number (per 100g)",
-  "category": "drink | food | oil | daily",
+  "category": "daily | snack | drink | food | poultry | fish | meat | vegetable | nut | oil | vegetarian | seafood | condiment | fat",
   "macros": {
     "fat": "number (grams per 100g)",
     "protein": "number (grams per 100g)",
@@ -191,19 +209,19 @@ const DocsPage: React.FC = () => {
     "id": "685e3a45b687e34b6e2f46c8",
     "name": "Water",
     "sugar": { "added": 0, "natural": 0 },
-    "type": ["sugarless"],
+    "tags": ["sugarless"],
     "calories": 0,
     "category": "drink",
     "macros": { "fat": 0, "protein": 0, "carbs": 0 }
   },
   {
     "id": "685e3b1091dbcc6fa6f6aa4b",
-    "name": "Black Coffee",
+    "name": "Grilled Chicken Breast",
     "sugar": { "added": 0, "natural": 0 },
-    "type": ["sugarless"],
-    "calories": 2,
-    "category": "drink",
-    "macros": { "fat": 0, "protein": 0.3, "carbs": 0 }
+    "tags": ["sugarless", "keto"],
+    "calories": 165,
+    "category": "poultry",
+    "macros": { "fat": 3.6, "protein": 31, "carbs": 0 }
   }
 ]`}
             />
@@ -216,7 +234,7 @@ const DocsPage: React.FC = () => {
   "id": "685e3c4f2a1b3c4d5e6f7890",
   "name": "Avocado Oil",
   "sugar": { "added": 0, "natural": 0 },
-  "type": ["sugarless"],
+  "tags": ["sugarless", "keto", "vegan"],
   "calories": 884,
   "category": "oil",
   "macros": { "fat": 100, "protein": 0, "carbs": 0 }
@@ -228,21 +246,21 @@ const DocsPage: React.FC = () => {
               path={apiEndpoints.createProduct}
               description="Add a new product to the database. The product will be assigned a unique ID automatically."
               requestExample={`{
-  "name": "Green Tea",
-  "sugar": { "added": 0, "natural": 0 },
-  "type": ["sugarless"],
-  "calories": 2,
-  "category": "drink",
-  "macros": { "fat": 0, "protein": 0.1, "carbs": 0 }
+  "name": "Organic Spinach",
+  "sugar": { "added": 0, "natural": 0.4 },
+  "tags": ["sugarless", "vegan", "organic"],
+  "calories": 23,
+  "category": "vegetable",
+  "macros": { "fat": 0.4, "protein": 2.9, "carbs": 3.6 }
 }`}
               responseExample={`{
   "id": "685e3d1f4b2c5a6e7f8g9012",
-  "name": "Green Tea",
-  "sugar": { "added": 0, "natural": 0 },
-  "type": ["sugarless"],
-  "calories": 2,
-  "category": "drink",
-  "macros": { "fat": 0, "protein": 0.1, "carbs": 0 }
+  "name": "Organic Spinach",
+  "sugar": { "added": 0, "natural": 0.4 },
+  "tags": ["sugarless", "vegan", "organic"],
+  "calories": 23,
+  "category": "vegetable",
+  "macros": { "fat": 0.4, "protein": 2.9, "carbs": 3.6 }
 }`}
             />
 
@@ -254,18 +272,18 @@ const DocsPage: React.FC = () => {
                 { name: 'id', type: 'string', description: 'Product ID to update', required: true }
               ]}
               requestExample={`{
-  "name": "Updated Green Tea",
-  "calories": 3,
-  "macros": { "fat": 0, "protein": 0.2, "carbs": 0.1 }
+  "name": "Premium Organic Spinach",
+  "calories": 25,
+  "tags": ["sugarless", "vegan", "organic", "gluten-free"]
 }`}
               responseExample={`{
   "id": "685e3d1f4b2c5a6e7f8g9012",
-  "name": "Updated Green Tea",
-  "sugar": { "added": 0, "natural": 0 },
-  "type": ["sugarless"],
-  "calories": 3,
-  "category": "drink",
-  "macros": { "fat": 0, "protein": 0.2, "carbs": 0.1 }
+  "name": "Premium Organic Spinach",
+  "sugar": { "added": 0, "natural": 0.4 },
+  "tags": ["sugarless", "vegan", "organic", "gluten-free"],
+  "calories": 25,
+  "category": "vegetable",
+  "macros": { "fat": 0.4, "protein": 2.9, "carbs": 3.6 }
 }`}
             />
 
@@ -287,12 +305,34 @@ const DocsPage: React.FC = () => {
             <h2 className="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-purple-500 pb-2">
               Product Categories
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {productCategories.map(({ category, description }) => (
-                <div key={category} className="bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-lg border border-purple-200 shadow-sm">
-                  <div className="flex items-center mb-3">
-                    <code className="text-lg font-mono bg-purple-100 text-purple-800 px-3 py-2 rounded-md">
+                <div key={category} className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg border border-purple-200 shadow-sm">
+                  <div className="flex items-center mb-2">
+                    <code className="text-sm font-mono bg-purple-100 text-purple-800 px-2 py-1 rounded-md">
                       {category}
+                    </code>
+                  </div>
+                  <p className="text-gray-700 text-sm">{description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Product Tags */}
+          <section className="mb-12">
+            <h2 className="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-emerald-500 pb-2">
+              Product Tags
+            </h2>
+            <p className="text-gray-600 mb-6 text-lg">
+              Tags help categorize products by dietary preferences and special attributes:
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {productTags.map(({ tag, description }) => (
+                <div key={tag} className="bg-gradient-to-r from-emerald-50 to-teal-50 p-6 rounded-lg border border-emerald-200 shadow-sm">
+                  <div className="flex items-center mb-3">
+                    <code className="text-lg font-mono bg-emerald-100 text-emerald-800 px-3 py-2 rounded-md">
+                      {tag}
                     </code>
                   </div>
                   <p className="text-gray-700">{description}</p>
@@ -397,12 +437,12 @@ const fetchProducts = async () => {
                 <CodeBlock title="TypeScript" language="typescript">
 {`const createProduct = async () => {
   const newProduct = {
-    name: "Herbal Tea",
+    name: "Wild Salmon",
     sugar: { added: 0, natural: 0 },
-    type: ["sugarless"],
-    calories: 1,
-    category: "drink",
-    macros: { fat: 0, protein: 0, carbs: 0.2 }
+    tags: ["sugarless", "keto"],
+    calories: 208,
+    category: "fish",
+    macros: { fat: 12.4, protein: 25.4, carbs: 0 }
   };
 
   const response = await apiService.createProduct(newProduct);
@@ -433,6 +473,8 @@ const fetchProducts = async () => {
                   <li>• Product IDs are automatically generated and cannot be modified</li>
                   <li>• Sugar values should be in grams per 100g of product</li>
                   <li>• Macro values (fat, protein, carbs) should also be per 100g</li>
+                  <li>• Tags can be combined (e.g., a product can be both "sugarless" and "keto")</li>
+                  <li>• Categories are mutually exclusive - each product has exactly one category</li>
                 </ul>
               </div>
             </div>

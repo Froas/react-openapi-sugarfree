@@ -108,7 +108,7 @@ const HomePage: React.FC = () => {
             </div>
           </div>
         </div>
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent mb-4">
+        <h1 className="leading-[1.24] text-5xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent mb-4">
           Welcome to Sugarless API
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
