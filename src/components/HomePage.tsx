@@ -5,6 +5,7 @@ import ResponsePanel from './ResponsePanel';
 import type { RequestState, ResponseState, HttpMethod } from '../types';
 import { apiConfig, defaultHeaders } from '../config/api';
 import { apiService } from '../services/apiServices';
+import { Leaf } from 'lucide-react';
 
 const HomePage: React.FC = () => {
   const [requestState, setRequestState] = useState<RequestState>({
@@ -96,14 +97,23 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* Header Section */}
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">
+        <div className="flex justify-center mb-6">
+          <div className="relative">
+            <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg">
+              <Leaf className="w-10 h-10 text-white" />
+            </div>
+            <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
+              <span className="text-xs font-bold text-yellow-800">0</span>
+            </div>
+          </div>
+        </div>
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent mb-4">
           Welcome to Sugarless API
         </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Track and discover sugarless products with our clean REST API. 
-          Find products by sugar content, calories, and nutritional information.
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          Track and discover sugar-free products with our clean REST API. 
+          Find healthy alternatives by sugar content, calories, and nutritional information. 🌱
         </p>
       </div>
 

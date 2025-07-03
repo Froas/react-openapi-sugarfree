@@ -41,7 +41,7 @@ const RequestPanel: React.FC<RequestPanelProps> = ({
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
       <h2 className="text-2xl font-semibold mb-6 flex items-center">
-        <Send className="w-6 h-6 mr-2 text-blue-600" />
+        <Send className="w-6 h-6 mr-2 text-green-600" />
         Make a Request
       </h2>
       
@@ -125,7 +125,7 @@ const RequestPanel: React.FC<RequestPanelProps> = ({
         <button
           onClick={onSendRequest}
           disabled={isLoading}
-          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-md hover:from-blue-700 hover:to-purple-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+          className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-4 rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
         >
           {isLoading ? (
             <>
