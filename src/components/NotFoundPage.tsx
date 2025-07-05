@@ -3,9 +3,7 @@ import {
     Home, 
     FileQuestion, 
     ArrowLeft, 
-    Search, 
     Book, 
-    RefreshCw,
     ExternalLink,
     Zap,
     Heart

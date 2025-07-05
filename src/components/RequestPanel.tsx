@@ -1,7 +1,7 @@
 // components/RequestPanel.tsx
 import React from 'react';
 import { Send } from 'lucide-react';
-import type{ HttpMethod, RequestState } from '../types';
+import type { HttpMethod, RequestState } from '../types';
 import { apiConfig } from '../config/api';
 
 interface RequestPanelProps {
@@ -35,8 +35,17 @@ const RequestPanel: React.FC<RequestPanelProps> = ({
   const availableEndpoints = [
     { endpoint: `${apiConfig.baseUrl}/`, description: 'Get all products' },
     { endpoint: `${apiConfig.baseUrl}/random`, description: 'Get random product' },
-    { endpoint: `${apiConfig.baseUrl}/delete/{id}`, description: 'Delete product by ID' },
+    // { endpoint: `${apiConfig.baseUrl}/delete/{id}`, description: 'Delete product by ID' },
   ];
+
+  // This function handles changes to the editable part of the URL.
+  const handleUrlPathChange = (path: string) => {
+    // We reconstruct the full URL by combining the static base URL with the new path.
+    onStateChange({ url: `${apiConfig.baseUrl}${path}` });
+  };
+
+  // We extract the editable path from the full URL string for the input field.
+  const urlPath = url.substring(apiConfig.baseUrl.length);
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
@@ -55,6 +64,7 @@ const RequestPanel: React.FC<RequestPanelProps> = ({
             value={method}
             onChange={(e) => handleMethodChange(e.target.value as HttpMethod)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            disabled
           >
             <option value="GET">GET</option>
             <option value="POST">POST</option>
@@ -69,13 +79,21 @@ const RequestPanel: React.FC<RequestPanelProps> = ({
           <label className="block text-sm font-medium text-gray-700 mb-2">
             URL
           </label>
-          <input
-            type="text"
-            value={url}
-            onChange={(e) => onStateChange({ url: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder={`${apiConfig.baseUrl}/`}
-          />
+          {/* We create a composite input field using a flex container. */}
+          <div className="flex items-center w-full border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent overflow-hidden transition-all duration-200">
+            {/* This span displays the non-editable base URL. Added whitespace-nowrap to prevent line breaks. */}
+            <span className="px-3 py-2 bg-gray-100 text-gray-500 border-r border-gray-300 whitespace-nowrap">
+              {apiConfig.baseUrl}
+            </span>
+            {/* This input is for the editable part of the URL (the path). */}
+            <input
+              type="text"
+              value={urlPath}
+              onChange={(e) => handleUrlPathChange(e.target.value)}
+              className="w-full px-3 py-2 border-none focus:outline-none focus:ring-0"
+              placeholder="/"
+            />
+          </div>
           
           {/* Available Endpoints */}
           <div className="mt-2 text-sm text-gray-500">

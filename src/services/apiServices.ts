@@ -82,6 +82,10 @@ class ApiService {
     );
   }
 
+  async getStatus(): Promise<ApiResponse<Product>> {
+    return this.makeRequest<Product>(apiEndpoints.getStatus)
+  }
+
   // Custom request method for the UI
   async customRequest(
     url: string,

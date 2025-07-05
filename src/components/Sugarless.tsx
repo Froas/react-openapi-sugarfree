@@ -205,7 +205,7 @@ const SugarlessFrontend = () => {
                 <ul className="list-disc list-inside space-y-1 mt-1">
                   <li><code>http://127.0.0.1:8000/</code> - Get all products</li>
                   <li><code>http://127.0.0.1:8000/random</code> - Get random product</li>
-                  <li><code>http://127.0.0.1:8000/delete/{`{id}`}</code> - Delete product by ID</li>
+                  {/* <li><code>http://127.0.0.1:8000/delete/{`{id}`}</code> - Delete product by ID</li> */}
                 </ul>
               </div>
             </div>

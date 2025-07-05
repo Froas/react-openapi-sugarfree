@@ -11,10 +11,11 @@ export interface ApiEndpoints {
   createProduct: string;
   deleteProduct: (id: string) => string;
   updateProduct: (id: string) => string;
+  getStatus: string
 }
 
 export const apiConfig: ApiConfig = {
-  baseUrl: import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000',
+  baseUrl: import.meta.env.VITE_API_BASE_URL,
   timeout: 10000, 
   retries: 3
 };
@@ -24,7 +25,8 @@ export const apiEndpoints: ApiEndpoints = {
   getRandomProduct: '/random',
   createProduct: '/',
   deleteProduct: (id: string) => `/delete/${id}`,
-  updateProduct: (id: string) => `/update/${id}`
+  updateProduct: (id: string) => `/update/${id}`,
+  getStatus: '/status'
 };
 
 export const defaultHeaders = {

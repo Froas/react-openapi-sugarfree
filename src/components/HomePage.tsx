@@ -1,5 +1,5 @@
 // components/HomePage.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import RequestPanel from './RequestPanel';
 import ResponsePanel from './ResponsePanel';
 import type { RequestState, ResponseState, HttpMethod } from '../types';
@@ -7,9 +7,15 @@ import { apiConfig, defaultHeaders } from '../config/api';
 import { apiService } from '../services/apiServices';
 import { Leaf } from 'lucide-react';
 
+
+enum StatusEnum {
+  Offline = "Offline",
+  Online = "Online",
+}
 const HomePage: React.FC = () => {
+  const [status, setStatus] = useState<StatusEnum>(StatusEnum.Offline)
   const [requestState, setRequestState] = useState<RequestState>({
-    url: `${apiConfig.baseUrl}/`,
+    url: `${apiConfig.baseUrl}/random`,
     method: 'GET' as HttpMethod,
     headers: JSON.stringify(defaultHeaders, null, 2),
     body: JSON.stringify({
@@ -28,6 +34,8 @@ const HomePage: React.FC = () => {
       }
     }, null, 2),
   });
+
+
 
   const [responseState, setResponseState] = useState<ResponseState>({
     data: '',
@@ -95,6 +103,16 @@ const HomePage: React.FC = () => {
     }
   };
 
+  useEffect( () => {
+    const fetch = async () => {
+      const response = await apiService.getStatus()
+      if (response.status == 200) {
+        setStatus(StatusEnum.Online)
+      } 
+    }
+    fetch()
+  },[handleSendRequest])
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="text-center mb-12">
@@ -138,8 +156,10 @@ const HomePage: React.FC = () => {
             <span>API Base URL: <code className="bg-gray-100 px-2 py-1 rounded">{apiConfig.baseUrl}</code></span>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-            <span>Ready</span>
+            <div
+              className={`w-2 h-2 rounded-full ${status === StatusEnum.Offline ? "bg-red-500" : "bg-green-500"}`}
+            ></div>
+            <span>{status}</span> 
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { apiConfig, apiEndpoints } from '../config/api';
-import type { ProductCategory } from '../types';
+// import type { ProductCategory } from '../types';
 
 const DocsPage: React.FC = () => {
   const productCategories: Array<{ category: string; description: string }> = [
