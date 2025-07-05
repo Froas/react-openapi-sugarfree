@@ -122,7 +122,7 @@ const HomePage: React.FC = () => {
               <Leaf className="w-10 h-10 text-white" />
             </div>
             <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
-              <span className="text-xs font-bold text-yellow-800">0</span>
+              <span className="text-xs font-bold text-yellow-800"></span>
             </div>
           </div>
         </div>
