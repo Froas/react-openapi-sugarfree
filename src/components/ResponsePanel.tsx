@@ -55,16 +55,23 @@ const ResponsePanel: React.FC<ResponsePanelProps> = ({ responseState }) => {
             </div>
           </div>
         ) : error ? (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center text-red-600">
-              <AlertCircle className="w-12 h-12 mx-auto mb-4" />
-              <p className="font-medium mb-2">Request Failed</p>
-              <pre className="text-sm bg-red-50 p-3 rounded border border-red-200 text-left max-w-lg">
+        <div className="flex items-center justify-center h-full p-4">
+          <div className="text-center text-red-600 w-full max-w-md">
+            <AlertCircle className="w-8 h-8 sm:w-12 sm:h-12 mx-auto mb-4" />
+            <p className="font-medium mb-4 text-sm sm:text-base">Request Failed</p>
+            
+            <div className="space-y-3">
+              <pre className="text-xs sm:text-sm bg-red-50 p-3 rounded border border-red-200 text-left overflow-x-auto whitespace-pre-wrap break-words">
                 {error}
               </pre>
+              
+              <div className="text-xs sm:text-sm bg-yellow-50 p-3 rounded border border-yellow-200 text-left text-yellow-800">
+                <p>Please try sending the request again. Sometimes it takes about 50 seconds for the server to wake up from sleep mode.</p>
+              </div>
             </div>
           </div>
-        ) : data ? (
+        </div>
+      ) : data ? (
           <div className="h-full">
             <pre className="text-sm overflow-auto whitespace-pre-wrap font-mono text-gray-800 h-full">
               {data}
