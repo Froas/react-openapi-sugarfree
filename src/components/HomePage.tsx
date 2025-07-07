@@ -35,7 +35,7 @@ const HomePage: React.FC = () => {
     }, null, 2),
   });
 
-
+  
 
   const [responseState, setResponseState] = useState<ResponseState>({
     data: '',
@@ -114,29 +114,29 @@ const HomePage: React.FC = () => {
   },[handleSendRequest])
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="text-center mb-12">
-        <div className="flex justify-center mb-6">
+    <div className="w-full max-w-6xl mx-auto px-4 py-6 sm:py-8">
+      <div className="text-center mb-8 sm:mb-12">
+        <div className="flex justify-center mb-4 sm:mb-6">
           <div className="relative">
-            <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg">
-              <Leaf className="w-10 h-10 text-white" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg">
+              <Leaf className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
             </div>
-            <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
+            <div className="absolute -top-2 -right-2 w-5 h-5 sm:w-6 sm:h-6 bg-yellow-400 rounded-full flex items-center justify-center">
               <span className="text-xs font-bold text-yellow-800"></span>
             </div>
           </div>
         </div>
-        <h1 className="leading-[1.24] text-5xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent mb-4">
+        <h1 className="leading-[1.24] text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3 sm:mb-4 px-2">
           Welcome to Sugarless API
         </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed px-4">
           Track and discover sugar-free products with our clean REST API. 
           Find healthy alternatives by sugar content, calories, and nutritional information. 🌱
         </p>
       </div>
 
       {/* Main Content */}
-      <div className="grid lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
         <RequestPanel
           requestState={requestState}
           isLoading={responseState.isLoading}
@@ -150,12 +150,14 @@ const HomePage: React.FC = () => {
       </div>
 
       {/* Status Bar */}
-      <div className="mt-8 p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="flex items-center justify-between text-sm text-gray-600">
-          <div className="flex items-center space-x-4">
-            <span>API Base URL: <code className="bg-gray-100 px-2 py-1 rounded">{apiConfig.baseUrl}</code></span>
+      <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs sm:text-sm text-gray-600 gap-2 sm:gap-0">
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <span className="break-all">
+              API Base URL: <code className="bg-gray-100 px-2 py-1 rounded text-xs">{apiConfig.baseUrl}</code>
+            </span>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-shrink-0">
             <div
               className={`w-2 h-2 rounded-full ${status === StatusEnum.Offline ? "bg-red-500" : "bg-green-500"}`}
             ></div>
