@@ -1,6 +1,7 @@
 name: Keep Onreder Awake
 
 on:
+  workflow_dispatch:
   schedule:
      - cron: '*/14 23 * * *' 
      - cron: '*/14 0-14 * * *'
