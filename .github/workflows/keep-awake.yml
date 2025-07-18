@@ -1,0 +1,13 @@
+name: Keep Onreder Awake
+
+on:
+  schedule:
+    - cron: '*/14 23-14 * * *'
+    
+jobs:
+  ping-getstatus:
+    runs-on: ubuntu-latest
+    steps:
+      - name: GET /getstatus on Sugarless FastAPI
+        run: |
+          curl --fail --silent https://sugarless-fastapi.onrender.com/getstatus || echo "Server did not respond"
